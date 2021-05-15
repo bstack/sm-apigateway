@@ -1,0 +1,11 @@
+﻿# NOTE: To create new requestId execute the following in powershell:
+$requestId = [System.Guid]::NewGuid()
+$correlationId = [System.Guid]::NewGuid()
+
+##############
+Main use cases
+##############
+
+$json = '{\"FromCurrency\":\"GBP\",\"FromCurrencyValue\":123.45,\"ToCurrency\":\"EUR\"}'
+C:\D\utilities\curl\bin\curl.exe -v -H 'Accept: application/json' -H 'Content-Type: application/json' -H "X-Request-Id: $requestId" -H "X-Correlation-Id: $correlationId" -X POST -d $json http://localhost:10003/api/rates
+C:\D\utilities\curl\bin\curl.exe -v -H 'Accept: application/json' -H 'Content-Type: application/json' -H "X-Request-Id: $requestId" -H "X-Correlation-Id: $correlationId" -X POST -d $json http://127.0.0.1:56352/api/rates
