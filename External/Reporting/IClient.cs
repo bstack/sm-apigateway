@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace apigateway.External.Reporting
 {
@@ -10,5 +11,8 @@ namespace apigateway.External.Reporting
             string correlationId,
             string activity,
             string activityDetail);
+
+
+        Task<IEnumerable<string>> Get();
     }
 }

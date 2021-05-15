@@ -36,8 +36,13 @@ namespace apigateway.External.Reporting
             _content.Headers.Add("X-Request-Id", requestId);
             _content.Headers.Add("X-Correlation-Id", correlationId);
             await this.c_httpClient.PostAsync(this.c_requestUri, _content);
-            Console.WriteLine(_logActivityRequestAsString);
             return;
+        }
+
+        public async Task<IEnumerable<string>> Get()
+        {
+            var httpResponse = await this.c_httpClient.GetAsync(this.c_requestUri);
+            return JsonConvert.DeserializeObject<IEnumerable<string>>(httpResponse.Content.ReadAsStringAsync().Result);
         }
     }
 }
