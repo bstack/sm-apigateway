@@ -3,7 +3,6 @@ using apigateway.External.Rates;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 
 namespace apigateway.Controllers
 {
@@ -30,15 +29,18 @@ namespace apigateway.Controllers
         public IActionResult Post(
             [FromBody] Models.LookupRequest lookupRequest)
         {
+            Console.WriteLine(1);
             var _requestId = Guid.NewGuid().ToString();
             var _correlationId = lookupRequest.LookupId.ToString();
             this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", "Start");
-
+            
+            Console.WriteLine(2);
             this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", "Calling external BINs request");
             var _cardBIN = lookupRequest.CardNumber.ToString().Substring(0, 6);
             var _binClientResponse = this.c_binsClient.Lookup(_correlationId, lookupRequest.MerchantId, _cardBIN).Result;
 
-            if(_binClientResponse.LookupStatus == LookupStatus.NoMatchFound)
+            Console.WriteLine(3);
+            if (_binClientResponse.LookupStatus == LookupStatus.NoMatchFound)
             {
                 this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", $"Received external BINs error response: Value:{_binClientResponse.LookupStatus}");
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "bin_lookup_failure");
