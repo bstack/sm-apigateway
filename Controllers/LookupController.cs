@@ -17,7 +17,7 @@ namespace apigateway.Controllers
         public LookupController(
             [FromServices] External.BINs.IClient binsClient,
             [FromServices] External.Rates.IClient ratesClient,
-            [FromServices] External.Reporting.Client reportingClient)
+            [FromServices] External.Reporting.IClient reportingClient)
         {
             this.c_binsClient = binsClient;
             this.c_ratesClient = ratesClient;
@@ -29,17 +29,14 @@ namespace apigateway.Controllers
         public IActionResult Post(
             [FromBody] Models.LookupRequest lookupRequest)
         {
-            Console.WriteLine(1);
             var _requestId = Guid.NewGuid().ToString();
             var _correlationId = lookupRequest.LookupId.ToString();
             this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", "Start");
             
-            Console.WriteLine(2);
             this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", "Calling external BINs request");
             var _cardBIN = lookupRequest.CardNumber.ToString().Substring(0, 6);
             var _binClientResponse = this.c_binsClient.Lookup(_correlationId, lookupRequest.MerchantId, _cardBIN).Result;
 
-            Console.WriteLine(3);
             if (_binClientResponse.LookupStatus == LookupStatus.NoMatchFound)
             {
                 this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", $"Received external BINs error response: Value:{_binClientResponse.LookupStatus}");

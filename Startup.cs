@@ -43,9 +43,9 @@ namespace apigateway
             );
 
             services
-                .AddSingleton<External.Rates.IClient, External.Rates.Client>()
-                .AddSingleton<External.BINs.IClient, External.BINs.Client>()
-                .AddSingleton<External.Reporting.IClient, External.Reporting.Client>()
+                .AddSingleton<External.Reporting.IClient, apigateway.External.Reporting.Client>()
+                .AddSingleton<External.Rates.IClient, apigateway.External.Rates.Client>()
+                .AddSingleton<External.BINs.IClient, apigateway.External.BINs.Client>()
                 .AddSingleton(_appSettings);
         }
 
