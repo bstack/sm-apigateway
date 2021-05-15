@@ -62,7 +62,7 @@ namespace apigateway.Controllers
             if (_ratesClientResponse.RateStatus == RateStatus.RateServiceServerError)
             {
                 this.c_reportingClient.LogActivity(_requestId, _correlationId, "APIGatewayController.Post", $"Received external Rates error response: Value:{_ratesClientResponse.RateStatus}");
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "bin_lookup_failure");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "rates_client_failure");
             }
             else
             {
