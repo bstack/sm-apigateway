@@ -31,6 +31,7 @@ namespace apigateway.External.Rates
         {
             var _rateRequest = new RateRequest(fromCurrency, fromCurrencyValue, toCurrency);
             var _rateRequestAsString = JsonConvert.SerializeObject(_rateRequest);
+            Console.WriteLine(_rateRequestAsString);
             var _content = new StringContent(_rateRequestAsString);
             _content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             _content.Headers.Add("X-Correlation-Id", correlationId);
@@ -38,6 +39,7 @@ namespace apigateway.External.Rates
             var _httpResponse = await this.c_httpClient.PostAsync(this.c_requestUri, _content);
 
             var _lookupStatus = this.MapLookupStatus(_httpResponse.StatusCode);
+            Console.WriteLine(_httpResponse.StatusCode);
             var _lookupResponse = JsonConvert.DeserializeObject<RateResponse>(_httpResponse.Content.ReadAsStringAsync().Result);
             return (_lookupStatus, _lookupResponse);
         }
