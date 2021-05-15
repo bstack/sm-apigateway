@@ -9,16 +9,16 @@ EXPOSE 10004
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["rates.csproj", "."]
-RUN dotnet restore "./rates.csproj"
+COPY ["apigateway.csproj", "."]
+RUN dotnet restore "./apigateway.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "rates.csproj" -c Release -o /app/build
+RUN dotnet build "apigateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "rates.csproj" -c Release -o /app/publish
+RUN dotnet publish "apigateway.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "rates.dll"]
+ENTRYPOINT ["dotnet", "apigateway.dll"]
