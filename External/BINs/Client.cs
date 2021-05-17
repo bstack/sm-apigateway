@@ -32,6 +32,7 @@ namespace apigateway.External.BINs
             var _lookupRequestAsString = JsonConvert.SerializeObject(_lookupRequest);
             var _content = new StringContent(_lookupRequestAsString);
             _content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            _content.Headers.Add("X-Request-Id", Guid.NewGuid().ToString());
             _content.Headers.Add("X-Correlation-Id", correlationId);
 
             var _httpResponse = await this.c_httpClient.PostAsync(this.c_requestUri, _content);
